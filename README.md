@@ -5,6 +5,7 @@
 ## Features (soon)
 - Add new transactions for the day
 - Track overall spendings monthly with a breakdown detail of each category
+- Export CSV file.
 
 ## Getting Started
 
