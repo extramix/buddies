@@ -1,7 +1,4 @@
-//TODO: try to move state to a separate component
-'use client';
-import { Calendar } from '@/components/ui/calendar';
-import { useState } from 'react';
+import { CustomCalendar } from '@/components/CustomCalendar';
 
 export default function Dashboard() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -10,12 +7,7 @@ export default function Dashboard() {
     <>
       <div className='flex items-center justify-items-center'>
         <main>
-          <Calendar
-            mode='single'
-            selected={date}
-            onSelect={setDate}
-            className='rounded-md border'
-          />
+          <CustomCalendar />
         </main>
       </div>
     </>
