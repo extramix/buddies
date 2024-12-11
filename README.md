@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Stacks
+- Next.js App router with React 19
+- TailwindCSS
+
+## Features (soon)
+- Add new transactions for the day
+- Track overall spendings monthly with a breakdown detail of each category
 
 ## Getting Started
 
