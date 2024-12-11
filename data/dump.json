@@ -49,8 +49,8 @@
       "date": "2024-12-01",
       "note": "Lunch at a restaurant",
       "userId": 1,
-      "paymentMethod": "Credit Card",
-      "location": "New York"
+      "paymentMethod": "Credit Card"
+     
     },
     {
       "id": 2,
@@ -59,8 +59,8 @@
       "date": "2024-12-03",
       "note": "Gas refill",
       "userId": 1,
-      "paymentMethod": "Cash",
-      "location": "New Jersey"
+      "paymentMethod": "Cash"
+     
     },
     {
       "id": 3,
@@ -69,8 +69,7 @@
       "date": "2024-12-05",
       "note": "Movie tickets",
       "userId": 2,
-      "paymentMethod": "Debit Card",
-      "location": "Berlin"
+      "paymentMethod": "Debit Card"
     },
     {
       "id": 4,
@@ -79,8 +78,7 @@
       "date": "2024-12-06",
       "note": "Grocery shopping",
       "userId": 1,
-      "paymentMethod": "Debit Card",
-      "location": "Brooklyn"
+      "paymentMethod": "Debit Card"
     },
     {
       "id": 5,
@@ -89,8 +87,7 @@
       "date": "2024-12-07",
       "note": "Taxi fare",
       "userId": 1,
-      "paymentMethod": "Cash",
-      "location": "Manhattan"
+      "paymentMethod": "Cash"
     },
     {
       "id": 6,
@@ -99,8 +96,7 @@
       "date": "2024-12-08",
       "note": "Concert tickets",
       "userId": 2,
-      "paymentMethod": "Credit Card",
-      "location": "Paris"
+      "paymentMethod": "Credit Card"
     },
     {
       "id": 7,
@@ -109,8 +105,7 @@
       "date": "2024-12-09",
       "note": "Breakfast at a cafe",
       "userId": 1,
-      "paymentMethod": "Cash",
-      "location": "Queens"
+      "paymentMethod": "Cash"
     },
     {
       "id": 8,
@@ -119,8 +114,7 @@
       "date": "2024-12-10",
       "note": "Train tickets",
       "userId": 2,
-      "paymentMethod": "Debit Card",
-      "location": "Munich"
+      "paymentMethod": "Debit Card"
     }
     ],
     "budgets": [
