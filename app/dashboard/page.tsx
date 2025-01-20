@@ -1,4 +1,5 @@
 import { CustomCalendar } from '@/components/CustomCalendar';
+import { TransactionTable } from '@/components/TransactionTable';
 
 export default async function Dashboard() {
   const transcations = await fetch(`http://localhost:8888/transactions`).then(
@@ -9,7 +10,10 @@ export default async function Dashboard() {
     <>
       <div className='flex items-center justify-items-center'>
         <main>
-          <CustomCalendar transactions={transcations} />
+          <div className='flex'>
+            <CustomCalendar />
+            <TransactionTable transactions={transcations} />
+          </div>
         </main>
       </div>
     </>
