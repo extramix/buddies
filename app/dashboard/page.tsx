@@ -1,3 +1,4 @@
+import { BudgetSummary } from '@/components/BudgetSummary';
 import { CustomCalendar } from '@/components/CustomCalendar';
 import { TransactionTable } from '@/components/TransactionTable';
 
@@ -7,15 +8,12 @@ export default async function Dashboard() {
   );
 
   return (
-    <>
-      <div className='flex items-center justify-items-center'>
-        <main>
-          <div className='flex'>
-            <CustomCalendar />
-            <TransactionTable transactions={transcations} />
-          </div>
-        </main>
+    <div className='flex-col space-y-2'>
+      <div className='flex space-x-2 justify-center'>
+        <CustomCalendar />
+        <TransactionTable transactions={transcations} />
       </div>
-    </>
+      <BudgetSummary />
+    </div>
   );
 }
