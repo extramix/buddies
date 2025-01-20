@@ -9,10 +9,18 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
+import { TransactionsItem } from '@/types/transaction';
 
-export const CustomCalendar = () => {
+export type CustomCalendarProps = {
+  transactions: TransactionsItem[];
+};
+
+export const CustomCalendar: React.FC<CustomCalendarProps> = ({
+  transactions,
+}) => {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
+  console.log(transactions, 'transactions');
   return (
     <div className='flex gap-3'>
       <Calendar
@@ -31,12 +39,18 @@ export const CustomCalendar = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className='font-medium'>INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className='text-right'>$250.00</TableCell>
-          </TableRow>
+          {transactions.map((transaction) => (
+            <TableRow key={transaction.id}>
+              <TableCell className='font-medium'>
+                ${transaction.amount}
+              </TableCell>
+              <TableCell>{transaction.date}</TableCell>
+              <TableCell>{transaction.note}</TableCell>
+              <TableCell className='text-right'>
+                {transaction.paymentMethod}
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>
