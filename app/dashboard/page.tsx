@@ -8,8 +8,8 @@ export default async function Dashboard() {
   );
 
   return (
-    <div className='flex-col space-y-2'>
-      <div className='flex space-x-2 justify-center'>
+    <div className='flex-col space-y-2 px-3 max-w-xl items-center'>
+      <div className='md:flex md:space-x-2 justify-center'>
         <CustomCalendar />
         <TransactionTable transactions={transcations} />
       </div>
