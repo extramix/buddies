@@ -36,7 +36,7 @@ const budgets = [
 
 export const BudgetSummary: React.FC = () => {
   return (
-    <Card>
+    <Card className='w-full'>
       <CardHeader>
         <CardTitle>Budget</CardTitle>
         <CardDescription>Your monthly budget progress.</CardDescription>

@@ -1,5 +1,5 @@
-import { BudgetSummary } from '@/components/BudgetSummary';
-import { CustomCalendar } from '@/components/CustomCalendar';
+import { CategoryBreakdown } from '@/components/CategoryBreakdown';
+import { ExpenseOverview } from '@/components/ExpenseOverview';
 import { TransactionTable } from '@/components/TransactionTable';
 
 export default async function Dashboard() {
@@ -8,12 +8,12 @@ export default async function Dashboard() {
   );
 
   return (
-    <div className='flex-col space-y-2 px-3 max-w-xl items-center'>
-      <div className='md:flex md:space-x-2 justify-center'>
-        <CustomCalendar />
-        <TransactionTable transactions={transcations} />
+    <div className='flex flex-col space-y-6 px-2 md:px-8 max-w-7xl w-full mx-auto'>
+      <div className='grid gap-6 md:grid-cols-2'>
+        <ExpenseOverview />
+        <CategoryBreakdown />
       </div>
-      <BudgetSummary />
+      <TransactionTable transactions={transcations} />
     </div>
   );
 }
