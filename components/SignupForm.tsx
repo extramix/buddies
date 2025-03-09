@@ -14,6 +14,7 @@ import Link from "next/link";
 import axiosInstance, { getSession } from "@/lib/axios";
 import FormField from "@/components/FormField";
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 const schema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -22,6 +23,14 @@ const schema = z.object({
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
 });
+
+type FormValues = {
+  username: string;
+  password: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+};
 
 export function SignUpForm({
   className,
@@ -57,6 +66,16 @@ export function SignUpForm({
       }
     } catch (error) {
       console.error("Error:", error);
+      if (error instanceof AxiosError && error.response?.data) {
+        const errorData = error.response.data;
+        Object.keys(errorData).forEach((field) => {
+          methods.setError(field as keyof FormValues, {
+            type: 'manual',
+            message: errorData[field][0]
+          });
+        });
+      }
+
     }
   };
 
