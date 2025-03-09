@@ -1,19 +1,51 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+"use client";
+import { useForm, FormProvider } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
+} from "@/components/ui/card";
+import Link from "next/link";
+import axiosInstance from "@/lib/axios";
+import FormField from "@/components/FormField";
+
+const schema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+  email: z.string().email("Invalid email address"),
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
+});
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const methods = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      username: '',
+      password: '',
+      email: '',
+      first_name: '',
+      last_name: '',
+    },
+  });
+
+  const onSubmit = async (data: any) => {
+    try {
+      const response = await axiosInstance.post("/user/", data);
+      console.log("Success:", response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -21,45 +53,14 @@ export function SignUpForm({
           <CardTitle className="text-xl">Signup</CardTitle>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="grid gap-6">
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
               <div className="grid gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="username">Username</Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" required />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="first_name">First Name</Label>
-                  <Input
-                    id="first_name"
-                    type="text"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="last_name">Last Name</Label>
-                  <Input
-                    id="last_name"
-                    type="text"
-                    required
-                  />
-                </div>
+                <FormField name="username" label="Username" required />
+                <FormField name="password" label="Password" required />
+                <FormField name="email" label="Email" required />
+                <FormField name="first_name" label="First Name" required />
+                <FormField name="last_name" label="Last Name" required />
                 <Button type="submit" className="w-full">
                   Sign Up
                 </Button>
@@ -70,10 +71,10 @@ export function SignUpForm({
                   Sign up
                 </Link>
               </div>
-            </div>
-          </form>
+            </form>
+          </FormProvider>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

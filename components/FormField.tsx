@@ -1,17 +1,18 @@
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, useFormContext } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormItem, FormControl, FormDescription, FormMessage, FormLabel } from "@/components/ui/form"; // Adjust the import based on your structure
+import { FormItem, FormControl, FormDescription, FormMessage, FormLabel } from "@/components/ui/form"; 
 
 interface FormFieldProps {
-  control: Control<any>;
   name: string;
   label: string;
   description?: string;
   required?: boolean;
 }
 
-const FormField: React.FC<FormFieldProps> = ({ control, name, label, description, required }) => {
+const FormField: React.FC<FormFieldProps> = ({ name, label, description, required }) => {
+  const { control, formState: { errors } } = useFormContext();
+
   return (
     <FormItem>
       <FormLabel>{label}{required && " *"}</FormLabel>
@@ -26,6 +27,9 @@ const FormField: React.FC<FormFieldProps> = ({ control, name, label, description
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}
       <FormMessage />
+      {errors[name] && typeof errors[name] === 'object' && 'message' in errors[name] && (
+        <FormMessage>{errors[name].message as string}</FormMessage>
+      )}
     </FormItem>
   );
 };
