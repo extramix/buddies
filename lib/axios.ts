@@ -2,7 +2,8 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api',
+  withCredentials: true
 });
 
 axiosInstance.interceptors.request.use(
