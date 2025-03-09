@@ -11,8 +11,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import axiosInstance from "@/lib/axios";
+import axiosInstance, { getSession } from "@/lib/axios";
 import FormField from "@/components/FormField";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -37,10 +38,23 @@ export function SignUpForm({
     },
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: any) => {
     try {
+      await getSession();
+      
       const response = await axiosInstance.post("/user/", data);
       console.log("Success:", response.data);
+
+      const loginResponse = await axiosInstance.post("/auth/login/", {
+        username: response.data.username,
+        password: response.data.password,
+      });
+      
+      if (loginResponse.data) {
+        router.push("/dashboard");
+      }
     } catch (error) {
       console.error("Error:", error);
     }
@@ -57,21 +71,21 @@ export function SignUpForm({
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <div className="grid gap-6">
                 <FormField name="username" label="Username" required />
-                <FormField name="password" label="Password" required />
-                <FormField name="email" label="Email" required />
-                <FormField name="first_name" label="First Name" required />
-                <FormField name="last_name" label="Last Name" required />
-                <Button type="submit" className="w-full">
-                  Sign Up
-                </Button>
-              </div>
-              <div className="text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <Link href="/signup" className="underline underline-offset-4">
-                  Sign up
-                </Link>
-              </div>
-            </form>
+              <FormField name="password" label="Password" required />
+              <FormField name="email" label="Email" required />
+              <FormField name="first_name" label="First Name" required />
+              <FormField name="last_name" label="Last Name" required />
+              <Button type="submit" className="w-full">
+                Sign Up
+              </Button>
+            </div>
+            <div className="text-center text-sm">
+              Don&apos;t have an account?{" "}
+              <Link href="/signup" className="underline underline-offset-4">
+                Sign up
+              </Link>
+            </div>
+          </form>
           </FormProvider>
         </CardContent>
       </Card>
