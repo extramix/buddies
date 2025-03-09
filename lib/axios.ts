@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
@@ -6,21 +6,17 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
+    config.headers = config.headers || {};
+
     const csrfToken = Cookies.get('csrftoken');
     const sessionToken = Cookies.get('sessionid');
 
     if (csrfToken) {
-      config.headers = {
-        ...config.headers,
-        'X-CSRFToken': csrfToken,
-      };
+      config.headers['X-CSRFToken'] = csrfToken;
     }
     if (sessionToken) {
-      config.headers = {
-        ...config.headers,
-        'Authorization': `Bearer ${sessionToken}`,
-      };
+      config.headers['Authorization'] = `Bearer ${sessionToken}`;
     }
 
     return config;
