@@ -16,7 +16,7 @@ export default async function Dashboard() {
         <h1 className='text-3xl font-semibold mb-5'>Dashboard</h1>
         <TransactionModal>
           <Button>
-            <Plus /> Add New Transaction
+            <Plus /> Add
           </Button>
         </TransactionModal>
       </div>

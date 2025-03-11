@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,6 +50,21 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
 
   const { handleSubmit, formState: { isSubmitting, errors }, reset, register, setValue, getValues } = methods;
 
+  // Add keyboard shortcut to open modal
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'n') {
+        setOpen(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const onSubmit = async (data: FormValues) => {
     console.log(data)
   };
@@ -68,7 +83,9 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
             <DialogHeader>
               <DialogTitle>Add New Transaction</DialogTitle>
               <DialogDescription>
-                Fill in the details for your new transaction.
+                <span className="block mt-1 text-xs text-muted-foreground">
+                 Tip: Press <kbd className="px-1 py-0.5 text-xs font-semibold border rounded-md">N</kbd> to quickly open this modal.
+                </span>
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
