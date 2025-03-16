@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import axiosInstance, { getSession } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 import FormField from "@/components/FormField";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
@@ -49,16 +49,15 @@ export function SignUpForm({
 
   const router = useRouter();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormValues) => {
     try {
-      await getSession();
       
       const response = await axiosInstance.post("/user/", data);
       console.log("Success:", response.data);
 
       const loginResponse = await axiosInstance.post("/auth/login/", {
-        username: response.data.username,
-        password: response.data.password,
+        username: data.username,
+        password: data.password,
       });
       
       if (loginResponse.data) {
