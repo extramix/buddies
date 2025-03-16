@@ -1,5 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
+import { toast } from 'sonner';
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api',
@@ -32,6 +33,20 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
+    const errorData = error.response?.data;
+    if (errorData && typeof errorData === 'object') {
+      // Handle field-level validation errors
+      Object.entries(errorData).forEach(([field, errors]) => {
+        if (Array.isArray(errors)) {
+          errors.forEach(error => {
+            toast.error(`${field}: ${error}`);
+          });
+        }
+      });
+    } else {
+      const errorMessage = error.response?.data?.detail || error.message || 'An unknown error occurred';
+      toast.error(errorMessage);
+    }
     console.error('API Error:', error);
     return Promise.reject(error);
   }
