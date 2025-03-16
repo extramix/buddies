@@ -6,16 +6,6 @@ const axiosInstance = axios.create({
   withCredentials: true
 });
 
-export const getSession = async () => {
-  try {
-    const response = await axiosInstance.get('/auth/session/');
-    return response.data;
-  } catch (error) {
-    console.error('Session Error:', error);
-    return null;
-  }
-};
-
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.headers = config.headers || {};    
@@ -37,13 +27,11 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Optional: Add response interceptors
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Handle errors globally
     console.error('API Error:', error);
     return Promise.reject(error);
   }

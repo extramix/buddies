@@ -4,11 +4,18 @@ import { TransactionTable } from '@/components/TransactionTable';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { TransactionModal } from '@/components/TransactionModal';
+import { cookies } from 'next/headers';
+import { serverFetch } from '@/lib/api';
 
 export default async function Dashboard() {
-  const transcations = await fetch(`http://localhost:8888/transactions`).then(
-    (res) => res.json()
-  );
+  let transactions = [];
+  
+  try {
+    const cookieStore = cookies();
+    transactions = await serverFetch('transaction/', cookieStore);
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+  }
 
   return (
     <div className='flex flex-col space-y-6 px-2 md:px-8 max-w-7xl w-full mx-auto my-5'>
@@ -24,7 +31,7 @@ export default async function Dashboard() {
         <ExpenseOverview />
         <CategoryBreakdown />
       </div>
-      <TransactionTable transactions={transcations} />
+      <TransactionTable transactions={transactions} />
     </div>
   );
 }

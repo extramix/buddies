@@ -15,7 +15,7 @@ import axiosInstance from "@/lib/axios";
 import FormField from "@/components/FormField";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
-
+import { login } from "@/lib/auth";
 const schema = z.object({
   username: z.string().min(1, "Username is required"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
@@ -55,12 +55,8 @@ export function SignUpForm({
       const response = await axiosInstance.post("/user/", data);
       console.log("Success:", response.data);
 
-      const loginResponse = await axiosInstance.post("/auth/login/", {
-        username: data.username,
-        password: data.password,
-      });
-      
-      if (loginResponse.data) {
+      const loginSuccess = await login(data.email, data.password);
+      if (loginSuccess) {
         router.push("/dashboard");
       }
     } catch (error) {
