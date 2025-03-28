@@ -1,4 +1,5 @@
-import { Home, Settings } from 'lucide-react';
+'use client';
+import { Home, LogOut, Settings } from 'lucide-react';
 
 import {
   Sidebar,
@@ -11,6 +12,9 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
+import { logout } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
+
 // Menu items.
 const items = [
   {
@@ -26,6 +30,17 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const success = await logout();
+    if (success) {
+      router.push('/');
+    } else {
+      console.error('Logout failed');
+    }
+  };
+
   return (
     <Sidebar collapsible='icon'>
       <SidebarContent>
@@ -43,6 +58,12 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={handleLogout}>
+                  <LogOut />
+                  <span>Log Out</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

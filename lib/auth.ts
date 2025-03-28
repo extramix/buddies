@@ -53,7 +53,8 @@ export const login = async (email: string, password: string): Promise<boolean> =
 export const logout = async (): Promise<boolean> => {
   try {
     const response = await axiosInstance.post('/auth/logout/');
-    return response.status === 200;
+    Cookies.remove('sessionid');
+    return true;
   } catch (error) {
     console.error('Logout error:', error);
     return false;
