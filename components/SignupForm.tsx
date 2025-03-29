@@ -55,7 +55,7 @@ export function SignUpForm({
       const response = await axiosInstance.post("/user/", data);
       console.log("Success:", response.data);
 
-      const loginSuccess = await login(data.email, data.password);
+      const loginSuccess = await login(data.username, data.password);
       if (loginSuccess) {
         router.push("/dashboard");
       }
@@ -86,7 +86,7 @@ export function SignUpForm({
               <div className="grid gap-6">
                 <FormField name="username" label="Username" required />
               <FormField name="password" label="Password" required />
-              <FormField name="email" label="Email" required />
+              <FormField name="email" label="Email" required /> 
               <FormField name="first_name" label="First Name" required />
               <FormField name="last_name" label="Last Name" required />
               <Button type="submit" className="w-full">

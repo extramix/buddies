@@ -6,13 +6,14 @@ import { Plus } from 'lucide-react';
 import { TransactionModal } from '@/components/TransactionModal';
 import { cookies } from 'next/headers';
 import { serverFetch } from '@/lib/api';
+import { TransactionsItem } from '@/types/transaction';
 
 export default async function Dashboard() {
-  let transactions = [];
+  let transactions: TransactionsItem[] = [];
   
   try {
     const cookieStore = cookies();
-    transactions = await serverFetch('transaction/', cookieStore);
+    transactions = await serverFetch<TransactionsItem[]>('transaction/', cookieStore);
   } catch (error) {
     console.error('Error fetching transactions:', error);
   }

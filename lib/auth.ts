@@ -37,10 +37,10 @@ export const getCsrfToken = (): string => {
 };
 
 // Client-side authentication functions using axios
-export const login = async (email: string, password: string): Promise<boolean> => {
+export const login = async (username: string, password: string): Promise<boolean> => {
   try {
     const response = await axiosInstance.post('/auth/login/', {
-      email,
+      username,
       password
     });
     return response.status === 200;
