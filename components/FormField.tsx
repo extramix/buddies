@@ -16,6 +16,7 @@ interface FormFieldProps {
   min?: string;
   max?: string;
   customInput?: React.ReactNode;
+  className?: string;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -30,7 +31,8 @@ const FormField: React.FC<FormFieldProps> = ({
   min,
   max,
   children,
-  customInput
+  customInput,
+  className,
 }) => {
   const { control, formState: { errors } } = useFormContext();
   const defaultPlaceholder = placeholder || `Enter ${label?.toLowerCase() || ''}`;
@@ -62,6 +64,7 @@ const FormField: React.FC<FormFieldProps> = ({
                   value={type === 'date' && !field.value ? '' : field.value}
                   min={min}
                   max={max}
+                  className={className}
                 />
               );
             }}

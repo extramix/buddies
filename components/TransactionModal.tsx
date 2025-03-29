@@ -16,6 +16,7 @@ import {
 import FormField from "@/components/FormField";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TransactionTypeTabs } from "./ui/TransactionTypeTabs";
+import "./dateInputStyles.css"; // Import custom CSS for date input
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -104,6 +105,7 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
                 label="Date"
                 type="date"
                 required
+                className="date-input-custom"
               />
               <FormField name="title" label="Title" required placeholder="Enter transaction title" />
 

@@ -1,0 +1,21 @@
+/* Custom styling for date input */
+.date-input-custom::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.date-input-custom {
+    position: relative;
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+
+/* Remove the default date picker icon first */
+.date-input-custom::-webkit-inner-spin-button,
+.date-input-custom::-webkit-datetime-edit-fields-wrapper,
+.date-input-custom::-webkit-datetime-edit {
+    position: relative;
+}
