@@ -8,11 +8,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormItem, FormControl, FormDescription, FormMessage, FormLabel } from "@/components/ui/form";
+import { SelectInput } from "./SelectInput";
 
 interface FormFieldProps {
   name: string;
   label: string;
   type?: 'text' | 'number' | 'date' | 'email' | 'password' | 'select';
+  children?: React.ReactNode;
   placeholder?: string;
   description?: string;
   required?: boolean;
@@ -32,7 +34,8 @@ const FormField: React.FC<FormFieldProps> = ({
   selectOptions,
   step,
   min,
-  max
+  max,
+  children
 }) => {
   const { control, formState: { errors } } = useFormContext();
   const defaultPlaceholder = placeholder || `Enter ${label.toLowerCase()}`;
@@ -47,18 +50,7 @@ const FormField: React.FC<FormFieldProps> = ({
           render={({ field }) => {
             if (type === 'select') {
               return (
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={defaultPlaceholder} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {selectOptions?.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <SelectInput field={field} selectOptions={selectOptions || []} defaultPlaceholder={defaultPlaceholder} />
               );
             }
             return (
@@ -75,6 +67,7 @@ const FormField: React.FC<FormFieldProps> = ({
           }}
         />
       </FormControl>
+      {children}
       {description && <FormDescription>{description}</FormDescription>}
       <FormMessage>{errors[name]?.message as string}</FormMessage>
     </FormItem>
