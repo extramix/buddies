@@ -1,18 +1,11 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { FormItem, FormControl, FormDescription, FormMessage, FormLabel } from "@/components/ui/form";
 import { SelectInput } from "./SelectInput";
 
 interface FormFieldProps {
   name: string;
-  label: string;
+  label?: string;
   type?: 'text' | 'number' | 'date' | 'email' | 'password' | 'select';
   children?: React.ReactNode;
   placeholder?: string;
@@ -22,6 +15,7 @@ interface FormFieldProps {
   step?: string;
   min?: string;
   max?: string;
+  customInput?: React.ReactNode;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -35,37 +29,44 @@ const FormField: React.FC<FormFieldProps> = ({
   step,
   min,
   max,
-  children
+  children,
+  customInput
 }) => {
   const { control, formState: { errors } } = useFormContext();
-  const defaultPlaceholder = placeholder || `Enter ${label.toLowerCase()}`;
+  const defaultPlaceholder = placeholder || `Enter ${label?.toLowerCase() || ''}`;
 
   return (
     <FormItem>
-      <FormLabel>{label}{required && <span className="text-red-500"> *</span>}</FormLabel>
+      {label && (
+        <FormLabel>{label}{required && <span className="text-red-500"> *</span>}</FormLabel>
+      )}
       <FormControl>
-        <Controller
-          name={name}
-          control={control}
-          render={({ field }) => {
-            if (type === 'select') {
+        {customInput ? (
+          customInput
+        ) : (
+          <Controller
+            name={name}
+            control={control}
+            render={({ field }) => {
+              if (type === 'select') {
+                return (
+                  <SelectInput field={field} selectOptions={selectOptions || []} defaultPlaceholder={defaultPlaceholder} />
+                );
+              }
               return (
-                <SelectInput field={field} selectOptions={selectOptions || []} defaultPlaceholder={defaultPlaceholder} />
+                <Input
+                  type={type}
+                  placeholder={defaultPlaceholder}
+                  step={type === 'number' ? step || 'any' : undefined}
+                  {...field}
+                  value={type === 'date' && !field.value ? '' : field.value}
+                  min={min}
+                  max={max}
+                />
               );
-            }
-            return (
-              <Input
-                type={type}
-                placeholder={defaultPlaceholder}
-                step={type === 'number' ? step || 'any' : undefined}
-                {...field}
-                value={type === 'date' && !field.value ? '' : field.value}
-                min={min}
-                max={max}
-              />
-            );
-          }}
-        />
+            }}
+          />
+        )}
       </FormControl>
       {children}
       {description && <FormDescription>{description}</FormDescription>}

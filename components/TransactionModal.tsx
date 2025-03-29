@@ -1,5 +1,4 @@
-"use client";
-
+'use client'
 import { useState, useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
@@ -15,6 +14,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FormField from "@/components/FormField";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TransactionTypeTabs } from "./ui/TransactionTypeTabs";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -98,42 +99,59 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
-              <FormField name="title" label="Title" required placeholder="Enter transaction title" />
-
-              <FormField 
-                name="amount" 
-                label="Amount" 
-                type="number" 
-                required 
-                placeholder="¥"
-                min="0"
-                step="100.00" 
-              />
-
-              <FormField
-                name="category"
-                label="Category"
-                type="select"
-                required
-                placeholder="Select a category"
-                selectOptions={categoryOptions}
-              />
-              
-              <FormField 
+            <FormField 
                 name="date" 
                 label="Date" 
                 type="date" 
                 required 
               />
+              <FormField name="title" label="Title" required placeholder="Enter transaction title" />
 
-              <FormField
-                name="type"
-                label="Type"
-                type="select"
-                required
-                placeholder="Select type"
-                selectOptions={typeOptions}
-              />
+              <div className="flex w-full gap-x-1">
+                <div>
+                <FormField 
+                  name="amount" 
+                  label="How much?" 
+                  type="number" 
+                  required 
+                  placeholder="¥"
+                  min="0"
+                  step="100.00" 
+                  >
+                {[100,500,1000].map((amount) => (
+                <Button
+                  key={amount}
+                  className="text-xs"
+                  variant="outline"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    methods.setValue("amount", amount.toString())
+                  }}
+                >
+                  ¥{amount}
+                </Button>
+              ))}
+              </FormField>
+                
+                  </div>
+
+                  <div>
+                  <FormField
+  name="type"
+  label="Transaction Type"
+  type="text"
+  customInput={
+    <TransactionTypeTabs methods={methods} categoryOptions={categoryOptions} />
+  }
+  />
+                                </div>
+
+     
+              </div>
+
+             
+              
+
             </div>
             <DialogFooter>
               <Button 
