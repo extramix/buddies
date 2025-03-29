@@ -65,7 +65,7 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -73,10 +73,10 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
 
   const onSubmit = async (data: FormValues) => {
     const submittedData = {
-        ...data,
-        amount: parseFloat(data.amount) 
+      ...data,
+      amount: parseFloat(data.amount)
     };
-    
+
   };
 
   return (
@@ -94,68 +94,62 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
               <DialogTitle>Add New Transaction</DialogTitle>
               <DialogDescription>
                 <span className="block mt-1 text-xs text-muted-foreground">
-                 Tip: Press <kbd className="px-1 py-0.5 text-xs font-semibold border rounded-md">N</kbd> to quickly open this modal.
+                  Tip: Press <kbd className="px-1 py-0.5 text-xs font-semibold border rounded-md">N</kbd> to quickly open this modal.
                 </span>
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
-            <FormField 
-                name="date" 
-                label="Date" 
-                type="date" 
-                required 
+              <FormField
+                name="date"
+                label="Date"
+                type="date"
+                required
               />
               <FormField name="title" label="Title" required placeholder="Enter transaction title" />
 
               <div className="flex w-full gap-x-1">
                 <div>
-                <FormField 
-                  name="amount" 
-                  label="How much?" 
-                  type="number" 
-                  required 
-                  placeholder="¥"
-                  min="0"
-                  step="100.00" 
-                  >
-                {[100,500,1000].map((amount) => (
-                <Button
-                  key={amount}
-                  className="text-xs"
-                  variant="outline"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    methods.setValue("amount", amount.toString())
-                  }}
-                >
-                  ¥{amount}
-                </Button>
-              ))}
-              </FormField>
-                
-                  </div>
-
-                  <div>
                   <FormField
-  name="type"
-  label="Transaction Type"
-  type="text"
-  customInput={
-    <TransactionTypeTabs methods={methods} categoryOptions={categoryOptions} />
-  }
-  />
-                                </div>
+                    name="amount"
+                    label="How much?"
+                    type="number"
+                    required
+                    placeholder="¥"
+                    min="0"
+                    step="100.00"
+                  >
+                    {[100, 500, 1000].map((amount) => (
+                      <Button
+                        key={amount}
+                        className="text-xs"
+                        variant="outline"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          methods.setValue("amount", amount.toString())
+                        }}
+                      >
+                        ¥{amount}
+                      </Button>
+                    ))}
+                  </FormField>
 
-     
+                </div>
+
+                <div>
+                  <FormField
+                    name="type"
+                    label="Transaction Type"
+                    type="text"
+                    customInput={
+                      <TransactionTypeTabs methods={methods} categoryOptions={categoryOptions} />
+                    }
+                  />
+                </div>
               </div>
-
-             
-              
-
             </div>
             <DialogFooter>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isSubmitting}
                 className="w-full"
               >
