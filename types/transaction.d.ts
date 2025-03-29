@@ -27,14 +27,26 @@ export interface UserCategoriesItem {
   userId: number;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+  type: string;
+}
+
+export interface Account {
+  id: number;
+  name: string;
+ currency: string;
+}
+
 export interface TransactionsItem {
   id: number;
-  categoryId: number;
+  category: Category;
+  account: Account;
   amount: number;
   date: string;
-  note: string;
+  description: string;
   userId: number;
-  paymentMethod: string;
 }
 
 export interface BudgetsItem {

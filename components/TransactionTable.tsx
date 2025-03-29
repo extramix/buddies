@@ -50,8 +50,8 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
           <TableHeader>
             <TableRow>
               <TableHead>Date</TableHead>
-              <TableHead className='w-[100px]'>Amout</TableHead>
-              <TableHead className=''>Category</TableHead>
+              <TableHead>Amout</TableHead>
+              <TableHead>Category</TableHead>
               <TableHead>Note</TableHead>
             </TableRow>
           </TableHeader>
@@ -60,14 +60,14 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
               <TableRow key={transaction.id}>
                 <TableCell>{transaction.date}</TableCell>
                 <TableCell className='font-medium'>
-                  ${transaction.amount}
+                  {transaction.account.currency} {transaction.amount}
                 </TableCell>
                 <TableCell className=''>
                   <Badge className='mr-2' variant='secondary'>
-                    {getCategoryName(transaction.categoryId)}
+                    {transaction.category.name}
                   </Badge>
                 </TableCell>
-                <TableCell>{transaction.note}</TableCell>
+                <TableCell>{transaction.description}</TableCell>
               </TableRow>
             ))}
           </TableBody>
