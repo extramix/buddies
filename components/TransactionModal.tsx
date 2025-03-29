@@ -14,25 +14,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import FormField from "@/components/FormField";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
-  amount: z.string().min(1, "Amount is required"),
+  amount: z.string().min(1, "Amount is required").refine(val => !isNaN(parseFloat(val)), { message: "Amount must be a number" }),
   category: z.string().min(1, "Category is required"),
   date: z.string().min(1, "Date is required"),
   type: z.enum(["expense", "income"]),
 });
 
 type FormValues = z.infer<typeof schema>;
+
+const categoryOptions = [
+  { value: "food", label: "Food" },
+  { value: "transportation", label: "Transportation" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "utilities", label: "Utilities" },
+  { value: "housing", label: "Housing" },
+  { value: "other", label: "Other" },
+];
+
+const typeOptions = [
+  { value: "expense", label: "Expense" },
+  { value: "income", label: "Income" },
+];
 
 export function TransactionModal({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -48,9 +54,8 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
     },
   });
 
-  const { handleSubmit, formState: { isSubmitting, errors }, reset, register, setValue, getValues } = methods;
+  const { handleSubmit, formState: { isSubmitting }, reset } = methods;
 
-  // Add keyboard shortcut to open modal
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'n') {
@@ -66,7 +71,11 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
   }, []);
 
   const onSubmit = async (data: FormValues) => {
-    console.log(data)
+    const submittedData = {
+        ...data,
+        amount: parseFloat(data.amount) 
+    };
+    
   };
 
   return (
@@ -89,95 +98,42 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">
-                  Title <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="title"
-                  {...register("title")}
-                  placeholder="Enter transaction title"
-                />
-                {errors.title && (
-                  <p className="text-sm text-red-500">{errors.title.message}</p>
-                )}
-              </div>
+              <FormField name="title" label="Title" required placeholder="Enter transaction title" />
 
-              <div className="space-y-2">
-                <Label htmlFor="amount">
-                  Amount <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="amount"
-                  type="number"
-                  step="0.01"
-                  {...register("amount")}
-                  placeholder="0.00"
-                />
-                {errors.amount && (
-                  <p className="text-sm text-red-500">{errors.amount.message}</p>
-                )}
-              </div>
+              <FormField 
+                name="amount" 
+                label="Amount" 
+                type="number" 
+                required 
+                placeholder="¥"
+                min="0"
+                step="100.00" 
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="category">
-                  Category <span className="text-red-500">*</span>
-                </Label>
-                <Select
-                  onValueChange={(value) => setValue("category", value, { shouldValidate: true })}
-                  defaultValue={getValues("category")}
-                >
-                  <SelectTrigger id="category">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="food">Food</SelectItem>
-                    <SelectItem value="transportation">Transportation</SelectItem>
-                    <SelectItem value="entertainment">Entertainment</SelectItem>
-                    <SelectItem value="utilities">Utilities</SelectItem>
-                    <SelectItem value="housing">Housing</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.category && (
-                  <p className="text-sm text-red-500">{errors.category.message}</p>
-                )}
-              </div>
+              <FormField
+                name="category"
+                label="Category"
+                type="select"
+                required
+                placeholder="Select a category"
+                selectOptions={categoryOptions}
+              />
+              
+              <FormField 
+                name="date" 
+                label="Date" 
+                type="date" 
+                required 
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="date">
-                  Date <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="date"
-                  type="date"
-                  {...register("date")}
-                />
-                {errors.date && (
-                  <p className="text-sm text-red-500">{errors.date.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="type">
-                  Type
-                </Label>
-                <Select
-                  onValueChange={(value) => setValue("type", value as "expense" | "income", { shouldValidate: true })}
-                  defaultValue={getValues("type")}
-                >
-                  <SelectTrigger id="type">
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="expense">Expense</SelectItem>
-                    <SelectItem value="income">Income</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.type && (
-                  <p className="text-sm text-red-500">{errors.type.message}</p>
-                )}
-              </div>
+              <FormField
+                name="type"
+                label="Type"
+                type="select"
+                required
+                placeholder="Select type"
+                selectOptions={typeOptions}
+              />
             </div>
             <DialogFooter>
               <Button 
