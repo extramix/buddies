@@ -22,10 +22,7 @@ export const DashboardContent = ({ transactions }: DashboardProps) => {
           </Button>
         </TransactionModal>
       </div>
-      <div className='grid gap-6 md:grid-cols-2'>
-        <ExpenseOverview />
-        <CategoryBreakdown />
-      </div>
+      <CategoryBreakdown />
       <TransactionTable transactions={transactions} />
     </div>
   );
