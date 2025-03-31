@@ -9,13 +9,9 @@ import {
 } from '@/components/ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 
-const data = [
-  { name: 'Food', value: 400 },
-  { name: 'Transport', value: 300 },
-  { name: 'Shopping', value: 200 },
-  { name: 'Bills', value: 278 },
-  { name: 'Others', value: 189 },
-];
+interface CategoryBreakdownProps {
+  data: { name: string, value: number }[];
+}
 
 const COLORS = [
   'hsl(var(--chart-1))',
@@ -25,7 +21,7 @@ const COLORS = [
   'hsl(var(--chart-5))',
 ];
 
-export function CategoryBreakdown() {
+export function CategoryBreakdown({ data }: CategoryBreakdownProps) {
   return (
     <Card className='col-span-1'>
       <CardHeader>
