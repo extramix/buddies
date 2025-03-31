@@ -20,21 +20,6 @@ export type TransactionTableProps = {
   transactions: TransactionsItem[];
 };
 
-const getCategoryName = (id: number) => {
-  switch (id) {
-    case 1:
-      return 'Food & Drinks';
-    case 2:
-      return 'Shopping';
-    case 3:
-      return 'Housing';
-    case 4:
-      return 'Transportation';
-    default:
-      return 'Others';
-  }
-};
-
 export const TransactionTable: React.FC<TransactionTableProps> = ({
   transactions,
 }) => {
@@ -56,20 +41,22 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {transactions.map((transaction) => (
-              <TableRow key={transaction.id}>
-                <TableCell>{transaction.date}</TableCell>
-                <TableCell className='font-medium'>
-                  {transaction.account.currency} {transaction.amount}
-                </TableCell>
-                <TableCell className=''>
-                  <Badge className='mr-2' variant='secondary'>
-                    {transaction.category.name}
-                  </Badge>
-                </TableCell>
-                <TableCell>{transaction.description}</TableCell>
-              </TableRow>
-            ))}
+            {[...transactions]
+              .sort((a, b) => Number(b.id) - Number(a.id))
+              .map((transaction) => (
+                <TableRow key={transaction.id}>
+                  <TableCell>{transaction.date}</TableCell>
+                  <TableCell className='font-medium'>
+                    {transaction.account.currency} {transaction.amount}
+                  </TableCell>
+                  <TableCell className=''>
+                    <Badge className='mr-2' variant='secondary'>
+                      {transaction.category.name}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{transaction.description}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </CardContent>
