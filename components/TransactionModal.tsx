@@ -22,7 +22,7 @@ import { useQuery } from "@apollo/client";
 import { GET_ACCOUNTS, GET_CATEGORIES } from "@/app/dashboard/graphql/queries";
 
 const schema = z.object({
-  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
   amount: z.string().min(1, "Amount is required").refine(val => !isNaN(parseFloat(val)), { message: "Amount must be a number" }),
   category: z.string().min(1, "Category is required"),
   account: z.string().min(1, "Account is required"),
@@ -43,9 +43,10 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
   const methods = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      title: "",
+      description: "",
       amount: "",
       category: "",
+      account: "",
       date: new Date().toISOString().split("T")[0],
       type: "expense",
     },
@@ -104,6 +105,11 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
     }
   });
 
+  useEffect(() => {
+    if (accounts?.accounts?.length > 0) {
+      methods.setValue('account', accounts.accounts[0].id.toString());
+    }
+  }, [accounts, methods]);
 
   const categoryOptions = categories?.categories?.[methods.watch("type")]?.map((category: { id: number, name: string }) => ({
     value: category.id.toString(),
@@ -137,13 +143,18 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
                 required
                 className="date-input-custom"
               />
-              <FormField name="title" label="Title" required placeholder="Enter transaction title" />
-              <FormField name="account" label="Account" type="select" defaultValue={accounts?.accounts[0].id}
+              <FormField name="description" label="Description" required placeholder="Enter transaction description" />
+              <FormField
+                name="account"
+                label="Account"
+                type="select"
                 selectOptions={accounts?.accounts?.map((account: { id: number, name: string }) => ({
                   value: account.id.toString(),
                   label: account.name
                 })) || []}
-                required placeholder="Enter transaction account" />
+                required
+                placeholder="Select an account"
+              />
 
               <div className="flex w-full gap-x-1">
                 <div>
