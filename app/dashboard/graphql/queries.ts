@@ -20,3 +20,27 @@ export const GET_TRANSACTIONS = gql`
     }
   }
 `; 
+
+export const GET_ACCOUNTS = gql`
+  query GetAccounts {
+    accounts {
+      id
+      name
+
+    }
+  }
+`;
+
+export const GET_CATEGORIES = gql`
+query GetCategories {
+  categories {
+    income {
+      id
+      name
+    }
+    expense {
+      id
+      name
+    }
+  }
+}`

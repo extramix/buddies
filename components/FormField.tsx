@@ -17,6 +17,7 @@ interface FormFieldProps {
   max?: string;
   customInput?: React.ReactNode;
   className?: string;
+  defaultValue?: string;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -33,6 +34,7 @@ const FormField: React.FC<FormFieldProps> = ({
   children,
   customInput,
   className,
+  defaultValue,
 }) => {
   const { control, formState: { errors } } = useFormContext();
   const defaultPlaceholder = placeholder || `Enter ${label?.toLowerCase() || ''}`;
@@ -52,7 +54,9 @@ const FormField: React.FC<FormFieldProps> = ({
             render={({ field }) => {
               if (type === 'select') {
                 return (
-                  <SelectInput field={field} selectOptions={selectOptions || []} defaultPlaceholder={defaultPlaceholder} />
+                  <SelectInput field={field} selectOptions={selectOptions || []} defaultPlaceholder={defaultPlaceholder}
+                    defaultValue={defaultValue}
+                  />
                 );
               }
               return (
