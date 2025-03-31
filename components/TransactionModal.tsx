@@ -18,8 +18,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TransactionTypeTabs } from "./ui/TransactionTypeTabs";
 import "./dateInputStyles.css"; // Import custom CSS for date input
 import { getCsrfToken } from "@/lib/auth";
-import { useQuery } from "@apollo/client";
-import { GET_ACCOUNTS, GET_CATEGORIES } from "@/app/dashboard/graphql/queries";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_ACCOUNTS, GET_CATEGORIES, CREATE_TRANSACTION, GET_TRANSACTIONS } from "@/app/dashboard/graphql/queries";
+import { toast } from "sonner";
 
 const schema = z.object({
   description: z.string().optional(),
@@ -54,6 +55,19 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
 
   const { handleSubmit, formState: { isSubmitting }, reset } = methods;
 
+  const [createTransaction] = useMutation(CREATE_TRANSACTION, {
+    refetchQueries: [{ query: GET_TRANSACTIONS }],
+    onCompleted: () => {
+      setOpen(false);
+      reset();
+      toast.success("Transaction added successfully");
+    },
+    onError: (error) => {
+      console.error('Error adding transaction:', error);
+      toast.error("Failed to add transaction");
+    },
+  });
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'n') {
@@ -69,32 +83,18 @@ export function TransactionModal({ children }: { children: React.ReactNode }) {
   }, []);
 
   const onSubmit = async (data: FormValues) => {
-    const submittedData = {
-      ...data,
-      amount: parseFloat(data.amount)
-    };
-
     try {
-      const response = await fetch('http://localhost:8000/api/transaction/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCsrfToken(),
-        },
-        credentials: 'include',
-        body: JSON.stringify(submittedData),
+      await createTransaction({
+        variables: {
+          accountId: data.account,
+          amount: Number(parseFloat(data.amount).toFixed(2)),
+          categoryId: data.category,
+          date: data.date,
+          description: data.description || ""
+        }
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to add transaction');
-      }
-
-      // Close the modal and reset form on successful submission
-      setOpen(false);
-      reset();
     } catch (error) {
       console.error('Error adding transaction:', error);
-      // You could add error handling UI here
     }
   };
 

@@ -44,3 +44,38 @@ query GetCategories {
     }
   }
 }`
+
+export const CREATE_TRANSACTION = gql`
+  mutation CreateTransaction(
+    $accountId: ID!
+    $amount: Float!
+    $categoryId: ID!
+    $date: Date!
+    $description: String!
+  ) {
+    createTransaction(
+      accountId: $accountId
+      amount: $amount
+      categoryId: $categoryId
+      date: $date
+      description: $description
+    ) {
+      transaction {
+        id
+        amount
+        date
+        description
+        category {
+          id
+          name
+          type
+        }
+        account {
+          id
+          name
+          currency
+        }
+      }
+    }
+  }
+`;
